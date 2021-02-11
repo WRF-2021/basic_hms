@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="medical_inpatient_registration_form_view" model="ir.ui.view">
+            <field name="name">medical.inpatient.registration.form.view</field>
+            <field name="model">medical.inpatient.registration</field>
+            <field name="arch" type="xml">
+                <form string="Información de registro de pacientes hospitalizados">
+                    <header>
+                        <button name="registration_confirm"
+                            states="free" string="Confirmar registro" class="oe_highlight"
+                             type="object" />
+                        <button name="registration_cancel"
+                            states="confirmed" class="oe_highlight" string="Cancelar registro"
+                            type="object" />
+                        <button name="registration_admission"
+                            states="confirmed" class="oe_highlight" string="Admisión de pacientes"
+                             type="object" />
+                        <button name="patient_discharge" states="hospitalized" class="oe_highlight"
+                            string="Paciente de alta" 
+                            type="object" />
+                        <field name="state" widget="statusbar"
+                            statusbar_visible="free,confirmed,cancelled,hospitalized"
+                            statusbar_colors="{&quot;confirmed&quot;:&quot;red&quot;,&quot;hospitalized&quot;:&quot;red&quot;,&quot;free&quot;:&quot;blue&quot;}"
+                            readonly="1" />
+                    </header>
+                    <sheet>
+                        <group string="Datos administrativos">
+                            <group>
+                                <field name="name" required="1" />
+                                <field name="patient_id" required="1" />
+
+                                <field name="hospitalization_date"
+                                    required="1" />
+                                <field name="discharge_date"
+                                    required="1" />
+                            </group>
+                            <group>
+                                <field name="attending_physician_id" />
+                                <field name="operating_physician_id" />
+                                <field name="admission_type"
+                                    required="1" />
+                                <field name="medical_pathology_id" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="info" />
+                        </group>
+                        <group colspan="4" col="4">
+                                    <field name="bed_transfers_ids"
+                                        colspan="4">
+                                        <tree editable="bottom">
+                                            <field name="date" />
+                                            <field name="bed_from" />
+                                            <field name="bed_to" />
+                                            <field name="reason" />
+                                        </tree>
+                                    </field>
+                                </group>
+                        <group string="Plan de cuidado">
+                            <field name="nursing_plan" />
+                            <field name="discharge_plan" />
+                        </group>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="medical_inpatient_registration_tree_view" model="ir.ui.view">
+            <field name="name">medical.inpatient.registration.tree.view</field>
+            <field name="model">medical.inpatient.registration</field>
+            <field name="arch" type="xml">
+                <tree
+                    colors="red:admission_type=='emergency';blue:admission_type=='maternity'"
+                    string="Información de registro de pacientes hospitalizados">
+                    <field name="name" />
+                    <field name="patient_id" />
+                    <field name="hospitalization_date" />
+                    <field name="discharge_date" />
+                    <field name="admission_type" />
+                    <field name="state" />
+                </tree>
+
+            </field>
+        </record>
+
+        <record id="action_medical_inpatient_registration" model="ir.actions.act_window">
+            <field name="name">Hospitalización</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.inpatient.registration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem id="menu_ss_hospitalization_administration"
+            parent="menu_inpatient_administration" action="action_medical_inpatient_registration"
+            sequence="0" />
+
+    </data>
+</odoo>
